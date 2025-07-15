@@ -32,13 +32,13 @@ public class Main {
         row[row.length-1] = temp;
     }
     public static void blowRight(int[] row){
-        int temp = row[0];
-        for(int i=row.length-1; i>0; i--){
-            int index = (i+1)%(row.length);
-            row[index] = row[i];
-        }
-        row[1] = temp;
+    int last = row[row.length - 1];
+    for(int i = row.length - 1; i > 0; i--){
+        row[i] = row[i - 1];
     }
+    row[0] = last;
+}
+
     public static boolean hasSameValueInColumn(int[] row1, int[] row2){
         for(int i=0; i<row1.length; i++){
             //System.out.println("1 : " + row1[i] + ", 2 : " + row2[i]);
