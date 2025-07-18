@@ -35,7 +35,8 @@ public class Main {
         if(
             (y>=0) && (y<grid.length) &&
             (x>=0) && (x<grid[0].length) &&
-            grid[y][x] != 0
+            (grid[y][x] != 0) && 
+            (visited[y][x] == false)
         ){
             return true;
         }else{
