@@ -24,6 +24,7 @@ public class Main {
             if(canGo(grid, y+dy[i], x+dx[i])){
                 if((y+dy[i]==grid.length-1)&&(x+dx[i]==grid[0].length-1)){
                     result = 1;
+                    return;
                 }
                 visited[y+dy[i]][x+dx[i]] = true;
                 //System.out.println(y+dy[i] + " " + x+dx[i]);
