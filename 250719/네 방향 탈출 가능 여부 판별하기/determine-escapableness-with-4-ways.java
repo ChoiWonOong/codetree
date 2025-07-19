@@ -18,6 +18,7 @@ public class Main {
         // Please write your code here.
         visited = new boolean[n][m];
         BFS(grid);
+        System.out.println(result);
     }
     public static void BFS(int[][] grid){
         Queue<int[]> queue = new LinkedList<>();
@@ -26,17 +27,23 @@ public class Main {
         visited[0][0] = true;
         while(!queue.isEmpty()){
             int[] current = queue.poll();
-            for(int i=0; i<4; i++){
-                if(
-                    (y+dy[i]>=0) && (y+dy[i]<grid.length) &&
-                    (x+dx[i]>=0) && (x+dx[i]<grid[0].length) &&
-                    (visited[y][x] != true) && 
-                    (grid[y+dy[i]][x+dx[i]] == 1)
-                ){
-                    int[] pair = {y+dy[i], x+dx[i]};
-                    queue.add(pair);
-                    int[] nextPair = queue.poll();
-                    visited[nextPair[0]][nextPair[1]] = true;
+            int y = current[0];
+            int x = current[1];
+            
+            // System.out.println("현재 위치: (" + y + ", " + x + ")");
+            for (int i = 0; i < 4; i++) {
+                int ny = y + dy[i];
+                int nx = x + dx[i];
+                if((y == grid.length-1)&&(x == grid[0].length-1)){
+                    result = 1;
+                    return;
+                }
+                if (ny >= 0 && ny < grid.length &&
+                    nx >= 0 && nx < grid[0].length &&
+                    grid[ny][nx] == 1 &&
+                    !visited[ny][nx]) {
+                    visited[ny][nx] = true;
+                    queue.add(new int[]{ny, nx});
                 }
             }
         }
