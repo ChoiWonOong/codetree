@@ -43,9 +43,9 @@ public class Main {
         }
         
         // Please write your code here.
-        ListIterator<Character> resultIter = list.listIterator();
-        while(resultIter.hasNext()){
-            System.out.print((char)resultIter.next());
+        iter = list.listIterator();
+        while(iter.hasNext()){
+            System.out.print((char)iter.next());
         }
     }
 }
