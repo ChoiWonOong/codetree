@@ -1,51 +1,43 @@
-    import java.util.Scanner;
-    import java.util.*;
+import java.util.*;
+import java.io.*;
 
-    public class Main {
-        public static void main(String[] args) {
-            Scanner sc = new Scanner(System.in);
-            
-            int n = sc.nextInt();
-            int m = sc.nextInt();
-            String s = sc.next();
-            sc.nextLine();
+public class Main {
+    public static void main(String[] args) throws IOException {
+        // Scanner 대신 BufferedReader 사용
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
-            LinkedList<Character> list = new LinkedList<>();
-            for(int i=0; i<s.length(); i++){
-                char c = s.charAt(i);
-                list.add(c);
-            }
-            ListIterator<Character> iter = list.listIterator();
-            while(iter.hasNext()){
-                iter.next();
-            }
-            for (int i = 0; i < m; i++) {
-                String command = sc.nextLine();
-                String[] tokens = command.split(" ");
-                if(tokens[0].equals("R")){
-                    if(iter.hasNext()){
-                        iter.next();
-                    }
-                }else if(tokens[0].equals("L")){
-                    if(iter.hasPrevious()){
-                        iter.previous();
-                    }
-                }else if(tokens[0].equals("D")){
-                    if(iter.hasNext()){
-                        iter.next();
-                        iter.remove();
-                    }
-                }else if(tokens[0].equals("P")){
-                    iter.add((char)tokens[1].charAt(0));
-                }else{
-                    System.out.println("Wrong Command : " + command);
+        String[] firstLine = br.readLine().split(" ");
+        int n = Integer.parseInt(firstLine[0]);
+        int m = Integer.parseInt(firstLine[1]);
+
+        String s = br.readLine();
+
+        LinkedList<Character> list = new LinkedList<>();
+        for (int i = 0; i < s.length(); i++) {
+            list.add(s.charAt(i));
+        }
+
+        ListIterator<Character> iter = list.listIterator();
+        while (iter.hasNext()) iter.next(); // 커서를 끝으로 이동
+
+        for (int i = 0; i < m; i++) {
+            String line = br.readLine();
+            if (line.equals("L")) {
+                if (iter.hasPrevious()) iter.previous();
+            } else if (line.equals("R")) {
+                if (iter.hasNext()) iter.next();
+            } else if (line.equals("D")) {
+                if (iter.hasNext()) {
+                    iter.next();
+                    iter.remove();
                 }
-            }
-            
-            // Please write your code here.
-            iter = list.listIterator();
-            while(iter.hasNext()){
-                System.out.print(iter.next());
+            } else if (line.startsWith("P ")) {
+                iter.add(line.charAt(2)); // "P x" 형태에서 x만 추출
             }
         }
+
+        for (char c : list) sb.append(c);
+        System.out.println(sb);
     }
+}
