@@ -4,36 +4,49 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
-
-        int[] coins = new int[n + 1]; // coins[0] = 시작점(동전 없음), coins[1..n] = 각 층
-        for (int i = 1; i <= n; i++) {
+        int[] coins = new int[n];
+        for (int i = 0; i < n; i++) {
             coins[i] = sc.nextInt();
         }
 
-        final int NEG = Integer.MIN_VALUE / 2;
-        int[][] dp = new int[n + 1][4]; // dp[i][k]: i층, 1계단 이동 k번 사용
+        int oneStep = 3;
 
-        for (int[] row : dp) java.util.Arrays.fill(row, NEG);
+        int[][] dp = new int[n + 1][4];
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= 3; j++) {
+                dp[i][j] = -1;
+            }
+        }
         dp[0][0] = 0;
 
-        for (int i = 1; i <= n; i++) {
-            for (int k = 0; k <= 3; k++) {
-                // 1계단 이동으로 도착 (k-1번 상태에서 옴)
-                if (k >= 1 && dp[i - 1][k - 1] != NEG) {
-                    dp[i][k] = Math.max(dp[i][k], dp[i - 1][k - 1] + coins[i]);
-                }
-                // 2계단 이동으로 도착
-                if (i >= 2 && dp[i - 2][k] != NEG) {
-                    dp[i][k] = Math.max(dp[i][k], dp[i - 2][k] + coins[i]);
+        dp[1][1] = coins[0];
+        dp[2][0] = coins[1];
+        dp[2][1] = coins[0] + coins[1];
+        for (int i = 2; i <= n; i++) {
+            for (int j = 0; j <= oneStep; j++) {
+                int prev2 = dp[i - 2][j];
+
+                if (j == 0) {
+                    dp[i][j] = (prev2 == -1) ? -1 : prev2 + coins[i - 1];
+                } else {
+                    int prev1 = dp[i - 1][j - 1];
+                    if (prev1 == -1 && prev2 == -1) {
+                        dp[i][j] = -1;
+                    } else if (prev1 == -1) {
+                        dp[i][j] = prev2 + coins[i - 1];
+                    } else if (prev2 == -1) {
+                        dp[i][j] = prev1 + coins[i - 1];
+                    } else {
+                        dp[i][j] = Math.max(prev1, prev2) + coins[i - 1];
+                    }
                 }
             }
         }
 
-        int answer = 0;
-        for (int k = 0; k <= 3; k++) {
-            answer = Math.max(answer, dp[n][k]);
+        int max = 0;
+        for (int i = 0; i <= 3; i++) {
+            max = Math.max(dp[n][i], max);
         }
-
-        System.out.println(answer);
+        System.out.println(max);
     }
 }
